@@ -23,58 +23,62 @@ class FlutterNativeAdmobPlugin(
     private val messenger: BinaryMessenger
 ) : MethodCallHandler {
 
-  enum class CallMethod {
-    initController, disposeController, setTestDeviceIds
-  }
-
-  companion object {
-
-    const val viewType = "native_admob"
-
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val messenger = registrar.messenger()
-      val channel = MethodChannel(messenger, "flutter_native_admob")
-
-      val instance = FlutterNativeAdmobPlugin(registrar.context(), messenger)
-      channel.setMethodCallHandler(instance)
-
-      // create platform view
-      registrar
-          .platformViewRegistry()
-          .registerViewFactory(viewType, ViewFactory())
+    enum class CallMethod {
+        initController, disposeController, setTestDeviceIds
     }
-  }
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
-    when (CallMethod.valueOf(call.method)) {
-      CallMethod.initController -> {
-        (call.argument<String>("controllerID"))?.let {
-          NativeAdmobControllerManager.createController(it, messenger, context)
-        }
-      }
+    companion object {
 
-      CallMethod.disposeController -> {
-        (call.argument<String>("controllerID"))?.let {
-          NativeAdmobControllerManager.removeController(it)
-        }
-      }
+        const val viewType = "native_admob"
 
-      CallMethod.setTestDeviceIds -> {
-        (call.argument<List<String>>("testDeviceIds"))?.let {
-          val configuration = RequestConfiguration.Builder().setTestDeviceIds(it).build()
-          MobileAds.setRequestConfiguration(configuration)
+        @JvmStatic
+        fun registerWith(registrar: Registrar) {
+            val messenger = registrar.messenger()
+            val channel = MethodChannel(messenger, "flutter_native_admob")
+
+            val instance = FlutterNativeAdmobPlugin(registrar.context(), messenger)
+            channel.setMethodCallHandler(instance)
+
+            // create platform view
+            registrar
+                .platformViewRegistry()
+                .registerViewFactory(viewType, ViewFactory())
         }
-      }
     }
-  }
+
+    override fun onMethodCall(call: MethodCall, result: Result) {
+        when (CallMethod.valueOf(call.method)) {
+            CallMethod.initController -> {
+                (call.argument<String>("controllerID"))?.let {
+                    NativeAdmobControllerManager.createController(it, messenger, context)
+                }
+            }
+
+            CallMethod.disposeController -> {
+                (call.argument<String>("controllerID"))?.let {
+                    NativeAdmobControllerManager.removeController(it)
+                }
+            }
+
+            CallMethod.setTestDeviceIds -> {
+                (call.argument<List<String>>("testDeviceIds"))?.let {
+                    val configuration = RequestConfiguration.Builder().setTestDeviceIds(it).build()
+                    MobileAds.setRequestConfiguration(configuration)
+                }
+            }
+        }
+    }
 }
 
 class ViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
-  override fun create(context: Context, id: Int, params: Any?): PlatformView {
-    return NativePlatformView(context, id, params)
-  }
+//    override fun create(context: Context, id: Int, params: Any?): PlatformView {
+//        return NativePlatformView(context, id, params)
+//    }
+
+    override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
+        return NativePlatformView(requireNotNull(context), viewId, args)
+    }
 }
 
 class NativePlatformView(
@@ -83,48 +87,48 @@ class NativePlatformView(
     params: Any?
 ) : PlatformView {
 
-  private var controller: NativeAdmobController? = null
-  private val view: NativeAdView
+    private var controller: NativeAdmobController? = null
+    private val view: NativeAdView
 
-  init {
-    val map = params as HashMap<*, *>
+    init {
+        val map = params as HashMap<*, *>
 
-    var type = NativeAdmobType.full
-    (map["type"] as? String)?.let {
-      type = NativeAdmobType.valueOf(it)
+        var type = NativeAdmobType.full
+        (map["type"] as? String)?.let {
+            type = NativeAdmobType.valueOf(it)
+        }
+
+        view = NativeAdView(context, type)
+
+        (map["controllerID"] as? String)?.let { id ->
+            val controller = NativeAdmobControllerManager.getController(id)
+            controller?.nativeAdChanged = { view.setNativeAd(it) }
+            this.controller = controller
+        }
+
+        view.options = (map["options"] as? HashMap<*, *>)?.let {
+            NativeAdmobOptions.parse(it)
+        } ?: NativeAdmobOptions()
+
+        controller?.nativeAd?.let {
+            view.setNativeAd(it)
+        }
     }
 
-    view = NativeAdView(context, type)
+    override fun getView(): View = view
 
-    (map["controllerID"] as? String)?.let { id ->
-      val controller = NativeAdmobControllerManager.getController(id)
-      controller?.nativeAdChanged = { view.setNativeAd(it) }
-      this.controller = controller
-    }
-
-    view.options = (map["options"] as? HashMap<*, *>)?.let {
-      NativeAdmobOptions.parse(it)
-    } ?: NativeAdmobOptions()
-
-    controller?.nativeAd?.let {
-      view.setNativeAd(it)
-    }
-  }
-
-  override fun getView(): View = view
-
-  override fun dispose() {}
+    override fun dispose() {}
 }
 
 fun Int.toRoundedColor(radius: Float): Drawable {
-  val drawable = GradientDrawable()
-  drawable.shape = GradientDrawable.RECTANGLE
-  drawable.cornerRadius = radius * Resources.getSystem().displayMetrics.density
-  drawable.setColor(this)
-  return drawable
+    val drawable = GradientDrawable()
+    drawable.shape = GradientDrawable.RECTANGLE
+    drawable.cornerRadius = radius * Resources.getSystem().displayMetrics.density
+    drawable.setColor(this)
+    return drawable
 }
 
 fun Int.dp(): Int {
-  val density = Resources.getSystem().displayMetrics.density
-  return (this * density).toInt()
+    val density = Resources.getSystem().displayMetrics.density
+    return (this * density).toInt()
 }
