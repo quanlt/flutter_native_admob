@@ -26,7 +26,7 @@
                 android:paddingStart="3dp"
                 android:paddingEnd="3dp" />
 
-            <com.google.android.gms.ads.formats.MediaView
+            <com.google.android.gms.ads.nativead.MediaView
                 android:id="@+id/ad_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
