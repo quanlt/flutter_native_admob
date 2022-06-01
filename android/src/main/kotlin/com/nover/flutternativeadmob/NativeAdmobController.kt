@@ -7,6 +7,7 @@ import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -53,8 +54,9 @@ class NativeAdmobController(
             adLoader = builder.forUnifiedNativeAd { nativeAd ->
               this.nativeAd = nativeAd
             }.withAdListener(object : AdListener() {
-              override fun onAdFailedToLoad(errorCode: Int) {
-                println("onAdFailedToLoad errorCode = $errorCode")
+              override fun onAdFailedToLoad(p0: LoadAdError) {
+                super.onAdFailedToLoad(p0)
+                println("onAdFailedToLoad errorCode = ${p0.code}")
                 channel.invokeMethod(LoadState.loadError.toString(), null)
               }
             }).build()

@@ -9,9 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.android.gms.ads.formats.MediaView
-import com.google.android.gms.ads.formats.UnifiedNativeAd
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.gms.ads.nativead.MediaView
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 
 enum class NativeAdmobType {
   full, banner
@@ -30,7 +30,7 @@ class NativeAdView @JvmOverloads constructor(
       updateOptions()
     }
 
-  private val adView: UnifiedNativeAdView
+  private val adView: NativeAdView
 
   private val ratingBar: RatingBar
 
@@ -89,11 +89,11 @@ class NativeAdView @JvmOverloads constructor(
     adView.advertiserView = adAdvertiser
   }
 
-  fun setNativeAd(nativeAd: UnifiedNativeAd?) {
+  fun setNativeAd(nativeAd: NativeAd?) {
     if (nativeAd == null) return
 
     // Some assets are guaranteed to be in every UnifiedNativeAd.
-    adMedia?.setMediaContent(nativeAd.mediaContent)
+    nativeAd.mediaContent?.let { adMedia?.setMediaContent(it) }
     adMedia?.setImageScaleType(ImageView.ScaleType.FIT_CENTER)
 
     adHeadline.text = nativeAd.headline
@@ -105,10 +105,10 @@ class NativeAdView @JvmOverloads constructor(
     val icon = nativeAd.icon
 
     if (icon == null) {
-      adView.iconView.visibility = View.GONE
+      adView.iconView?.visibility = View.GONE
     } else {
       (adView.iconView as ImageView).setImageDrawable(icon.drawable)
-      adView.iconView.visibility = View.VISIBLE
+      adView?.iconView?.visibility = View.VISIBLE
     }
 
     if (nativeAd.price == null) {
@@ -125,10 +125,10 @@ class NativeAdView @JvmOverloads constructor(
     }
 
     if (nativeAd.starRating == null) {
-      adView.starRatingView.visibility = View.INVISIBLE
+      adView.starRatingView?.visibility = View.INVISIBLE
     } else {
       (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
-      adView.starRatingView.visibility = View.VISIBLE
+      adView?.starRatingView?.visibility = View.VISIBLE
     }
 
     if (nativeAd.advertiser == null) {
