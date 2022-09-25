@@ -123,12 +123,12 @@ class NativeAdView @JvmOverloads constructor(
 //      adStore?.text = nativeAd.store
 //    }
 
-    if (nativeAd.starRating == null) {
-      adView.starRatingView.visibility = View.INVISIBLE
-    } else {
-      (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
-      adView.starRatingView.visibility = View.VISIBLE
-    }
+//    if (nativeAd.starRating == null) {
+//      adView.starRatingView.visibility = View.INVISIBLE
+//    } else {
+//      (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
+//      adView.starRatingView.visibility = View.VISIBLE
+//    }
 
     if (nativeAd.advertiser == null) {
       adAdvertiser.visibility = View.INVISIBLE

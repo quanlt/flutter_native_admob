@@ -4,14 +4,14 @@
 
     <com.google.android.gms.ads.formats.UnifiedNativeAdView
         android:id="@+id/ad_view"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
         <LinearLayout
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/transparent"
             android:orientation="vertical">
 
             <TextView
@@ -19,21 +19,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:text="@string/ad_label"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp"
                 android:paddingStart="3dp"
-                android:paddingEnd="3dp" />
+                android:paddingTop="1dp"
+                android:paddingEnd="3dp"
+                android:paddingBottom="1dp"
+                android:text="@string/ad_label"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
 
             <com.google.android.gms.ads.formats.MediaView
                 android:id="@+id/ad_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_weight="1"
                 android:adjustViewBounds="true" />
 
             <LinearLayout
@@ -48,29 +48,35 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/ad_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:adjustViewBounds="true"
-                        android:paddingEnd="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingBottom="5dp" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/ad_headline"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:lines="1"
-                            android:textColor="#0000FF"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/ad_icon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:adjustViewBounds="true"
+                                android:paddingEnd="5dp"
+                                android:paddingRight="5dp"
+                                android:paddingBottom="5dp" />
+
+                            <TextView
+                                android:id="@+id/ad_headline"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textColor="#0000FF"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -89,19 +95,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:isIndicator="true"
+                                android:visibility="gone"
                                 android:numStars="5"
                                 android:stepSize="0.5" />
+
+                            <TextView
+                                android:id="@+id/ad_body"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginRight="20dp"
+                                android:ellipsize="end"
+                                android:lines="2"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/ad_body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
-                            android:ellipsize="end"
-                            android:lines="2"
-                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -123,28 +131,28 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
                             android:paddingLeft="5dp"
-                            android:visibility="gone"
                             android:paddingEnd="5dp"
                             android:paddingRight="5dp"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/ad_store"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:visibility="gone"
                             android:paddingLeft="5dp"
                             android:paddingEnd="5dp"
                             android:paddingRight="5dp"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:visibility="gone" />
 
                         <Button
                             android:id="@+id/ad_call_to_action"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:background="@drawable/bg_cta_ads"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="16dp"
+                            android:background="@drawable/bg_cta_ads"
                             android:gravity="center"
                             android:paddingStart="15dp"
                             android:paddingTop="0dp"
