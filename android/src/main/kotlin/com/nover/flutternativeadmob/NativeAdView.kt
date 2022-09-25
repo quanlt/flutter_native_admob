@@ -110,12 +110,12 @@ class NativeAdView @JvmOverloads constructor(
       adView.iconView.visibility = View.VISIBLE
     }
 
-    if (nativeAd.price == null) {
-      adPrice?.visibility = View.INVISIBLE
-    } else {
-      adPrice?.visibility = View.VISIBLE
-      adPrice?.text = nativeAd.price
-    }
+//    if (nativeAd.price == null) {
+//      adPrice?.visibility = View.INVISIBLE
+//    } else {
+//      adPrice?.visibility = View.VISIBLE
+//      adPrice?.text = nativeAd.price
+//    }
 
 //    if (nativeAd.store == null) {
 //      adStore?.visibility = View.INVISIBLE
@@ -168,7 +168,7 @@ class NativeAdView @JvmOverloads constructor(
 
     adStore?.setTextColor(options.storeTextStyle.color)
     adStore?.textSize = options.storeTextStyle.fontSize
-    adStore?.visibility = options.storeTextStyle.visibility
+//    adStore?.visibility = options.storeTextStyle.visibility
 
     adPrice?.setTextColor(options.priceTextStyle.color)
     adPrice?.textSize = options.priceTextStyle.fontSize
