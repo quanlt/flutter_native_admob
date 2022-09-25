@@ -174,10 +174,7 @@ class NativeAdView @JvmOverloads constructor(
     adPrice?.textSize = options.priceTextStyle.fontSize
 //    adPrice?.visibility = options.priceTextStyle.visibility
 
-    callToAction.setTextColor(options.callToActionStyle.color)
+//    callToAction.setTextColor(options.callToActionStyle.color)
     callToAction.textSize = options.callToActionStyle.fontSize
-    options.callToActionStyle.backgroundColor?.let {
-      callToAction.setBackgroundColor(it)
-    }
   }
 }
