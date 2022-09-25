@@ -17,10 +17,10 @@ enum class NativeAdmobType {
 }
 
 class NativeAdView @JvmOverloads constructor(
-    context: Context,
-    type: NativeAdmobType,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+  context: Context,
+  type: NativeAdmobType,
+  attrs: AttributeSet? = null,
+  defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
   var options = NativeAdmobOptions()
@@ -31,12 +31,13 @@ class NativeAdView @JvmOverloads constructor(
 
   private val adView: UnifiedNativeAdView
 
-  private val ratingBar: RatingBar
-
   private val adMedia: MediaView?
 
   private val adHeadline: TextView
   private val adBody: TextView?
+  private val adPrice: TextView?
+  private val adStore: TextView?
+  private val adAttribution: TextView
   private val callToAction: Button
 
   init {
@@ -55,6 +56,10 @@ class NativeAdView @JvmOverloads constructor(
 
     adHeadline = adView.findViewById(R.id.ad_headline)
     adBody = adView.findViewById(R.id.ad_body)
+    adPrice = adView.findViewById(R.id.ad_price)
+    adStore = adView.findViewById(R.id.ad_store)
+    adAttribution = adView.findViewById(R.id.ad_attribution)
+    adAttribution.background = Color.parseColor("#FFCC66").toRoundedColor(3f)
     callToAction = adView.findViewById(R.id.ad_call_to_action)
 
     initialize()
@@ -70,6 +75,7 @@ class NativeAdView @JvmOverloads constructor(
     adView.bodyView = adBody
     adView.callToActionView = callToAction
     adView.iconView = adView.findViewById(R.id.ad_icon)
+    adView.priceView = adPrice
     adView.storeView = adStore
   }
 
@@ -100,11 +106,9 @@ class NativeAdView @JvmOverloads constructor(
 
   private fun updateOptions() {
     adMedia?.visibility = if (options.showMediaContent) View.VISIBLE else View.GONE
-
-    ratingBar.progressDrawable
-        .setColorFilter(options.ratingColor, PorterDuff.Mode.SRC_ATOP)
-
-
+    options.adLabelTextStyle.backgroundColor?.let {
+      adAttribution.background = it.toRoundedColor(3f)
+    }
 
     adHeadline.setTextColor(options.headlineTextStyle.color)
     adHeadline.textSize = options.headlineTextStyle.fontSize
