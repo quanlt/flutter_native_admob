@@ -85,7 +85,7 @@
                     android:id="@+id/ad_call_to_action"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:background="#4CBE99"
+                    android:background="@drawable/bg_cta_ads"
                     android:gravity="center"
                     android:layout_marginStart="5dp"
                     android:paddingStart="15dp"

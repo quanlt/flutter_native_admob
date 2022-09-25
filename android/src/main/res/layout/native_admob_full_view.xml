@@ -112,7 +112,7 @@
                         android:textSize="12sp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:orientation="horizontal"
@@ -124,6 +124,7 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
                             android:paddingLeft="5dp"
+                            android:visibility="gone"
                             android:paddingEnd="5dp"
                             android:paddingRight="5dp"
                             android:textSize="12sp" />
@@ -133,6 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
+                            android:visibility="gone"
                             android:paddingLeft="5dp"
                             android:paddingEnd="5dp"
                             android:paddingRight="5dp"
@@ -140,9 +142,10 @@
 
                         <Button
                             android:id="@+id/ad_call_to_action"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:background="#4CBE99"
+                            android:background="@drawable/bg_cta_ads"
+                            android:layout_marginHorizontal="16dp"
                             android:gravity="center"
                             android:paddingStart="15dp"
                             android:paddingTop="0dp"
