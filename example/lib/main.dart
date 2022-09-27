@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const _adUnitID = "ca-app-pub-3940256099942544/8135179316";
+  static const _adUnitID = "ca-app-pub-3940256099942544/2247696110";
 
   final _nativeAdController = NativeAdmobController();
 
@@ -21,93 +21,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              height: 90,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: NativeAdmob(
-                // Your ad unit id
-                adUnitID: _adUnitID,
-                numberAds: 3,
-                controller: _nativeAdController,
-                type: NativeAdmobType.banner,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.green,
-            ),
-            Container(
-              height: 330,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: NativeAdmob(
-                // Your ad unit id
-                adUnitID: _adUnitID,
-                numberAds: 3,
-                controller: _nativeAdController,
-                type: NativeAdmobType.full,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              height: 200.0,
-              color: Colors.blue,
-            ),
-          ],
+        body: NativeAdmob(
+          // Your ad unit id
+          adUnitID: _adUnitID,
+          numberAds: 3,
+          controller: _nativeAdController,
+          type: NativeAdmobType.banner,
         ),
         floatingActionButton: FloatingActionButton.extended(
           label: Text("Refresh Ads"),

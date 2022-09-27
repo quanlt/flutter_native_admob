@@ -31,8 +31,6 @@ class NativeAdView @JvmOverloads constructor(
 
   private val adView: UnifiedNativeAdView
 
-  private val ratingBar: RatingBar
-
   private val adMedia: MediaView?
 
   private val adHeadline: TextView
@@ -55,20 +53,18 @@ class NativeAdView @JvmOverloads constructor(
 
     adView = findViewById(R.id.ad_view)
 
-    adMedia = adView.findViewById(R.id.ad_media)
+    adMedia = adView.findViewById(R.id.adMedia)
 
-    adHeadline = adView.findViewById(R.id.ad_headline)
-    adAdvertiser = adView.findViewById(R.id.ad_advertiser)
-    adBody = adView.findViewById(R.id.ad_body)
-    adPrice = adView.findViewById(R.id.ad_price)
-    adStore = adView.findViewById(R.id.ad_store)
-    adAttribution = adView.findViewById(R.id.ad_attribution)
+    adHeadline = adView.findViewById(R.id.tvHeadline)
+    adAdvertiser = adView.findViewById(R.id.tvAdvertiser)
+    adBody = adView.findViewById(R.id.tvBody)
+    adPrice = adView.findViewById(R.id.tvPrice)
+    adStore = adView.findViewById(R.id.tvStore)
+    adAttribution = adView.findViewById(R.id.tvAd)
 
-    ratingBar = adView.findViewById(R.id.ad_stars)
 
     adAttribution.background = Color.parseColor("#FFCC66").toRoundedColor(3f)
     callToAction = adView.findViewById(R.id.ad_call_to_action)
-
     initialize()
   }
 
@@ -83,7 +79,6 @@ class NativeAdView @JvmOverloads constructor(
     adView.callToActionView = callToAction
     adView.iconView = adView.findViewById(R.id.ad_icon)
     adView.priceView = adPrice
-    adView.starRatingView = ratingBar
     adView.storeView = adStore
     adView.advertiserView = adAdvertiser
   }
@@ -143,9 +138,6 @@ class NativeAdView @JvmOverloads constructor(
 
   private fun updateOptions() {
     adMedia?.visibility = if (options.showMediaContent) View.VISIBLE else View.GONE
-
-    ratingBar.progressDrawable
-        .setColorFilter(options.ratingColor, PorterDuff.Mode.SRC_ATOP)
 
     options.adLabelTextStyle.backgroundColor?.let {
       adAttribution.background = it.toRoundedColor(3f)
