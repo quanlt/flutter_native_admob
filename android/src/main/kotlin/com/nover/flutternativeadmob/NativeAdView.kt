@@ -12,60 +12,158 @@ import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 
-enum class NativeAdmobType {
-    full, banner
-}
+class NativeAdView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
-class NativeAdView : FrameLayout {
+    var options = NativeAdmobOptions()
+        set(value) {
+            field = value
+            updateOptions()
+        }
 
-    constructor(context: Context) : super(context) {
-        inflateView()
+    private val adView: NativeAdView
+
+    private val ratingBar: RatingBar
+
+    private val adMedia: MediaView
+
+    private val adHeadline: TextView
+    private val adAdvertiser: TextView
+    private val adBody: TextView
+    private val adPrice: TextView
+    private val adStore: TextView
+    private val adAttribution: TextView
+    private val callToAction: Button
+
+    init {
+        val inflater = LayoutInflater.from(context)
+        inflater.inflate(R.layout.native_admob_full_view, this, true)
+
+        setBackgroundColor(Color.TRANSPARENT)
+
+        adView = findViewById(R.id.ad_view)
+
+        adMedia = adView.findViewById(R.id.ad_media)
+
+        adHeadline = adView.findViewById(R.id.ad_headline)
+        adAdvertiser = adView.findViewById(R.id.ad_advertiser)
+        adBody = adView.findViewById(R.id.ad_body)
+        adPrice = adView.findViewById(R.id.ad_price)
+        adStore = adView.findViewById(R.id.ad_store)
+        adAttribution = adView.findViewById(R.id.ad_attribution)
+
+        ratingBar = adView.findViewById(R.id.ad_stars)
+
+        adAttribution.background = Color.parseColor("#FFCC66").toRoundedColor(3f)
+        callToAction = adView.findViewById(R.id.ad_call_to_action)
+
+        initialize()
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        inflateView()
-    }
+    private fun initialize() {
+        // The MediaView will display a video asset if one is present in the ad, and the
+        // first image asset otherwise.
+        adView.mediaView = adMedia
 
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
-        context,
-        attrs,
-        defStyle
-    ) {
-        inflateView()
-    }
-
-
-    private fun inflateView() {
-        val view = LayoutInflater.from(context).inflate(R.layout.native_admob_full_view, this, true)
-        view.findViewById<MediaView>(R.id.adMedia)
-            .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-
-        val adView = view.findViewById<NativeAdView>(R.id.ad_view)
-        adView.headlineView = view.findViewById<TextView>(R.id.tvHeadline)
-        adView.bodyView = view.findViewById<TextView>(R.id.tvBody)
-        adView.callToActionView = view.findViewById<Button>(R.id.btnAction)
-        adView.iconView = view.findViewById<ImageView>(R.id.imvIcon)
-        adView.priceView = view.findViewById<Button>(R.id.tvPrice)
-        adView.storeView = view.findViewById<Button>(R.id.tvStore)
-        adView.advertiserView = view.findViewById<Button>(R.id.tvAdvertiser)
-        adView.mediaView = view.findViewById(R.id.adMedia)
+        // Register the view used for each individual asset.
+        adView.headlineView = adHeadline
+        adView.bodyView = adBody
+        adView.callToActionView = callToAction
+        adView.iconView = adView.findViewById(R.id.ad_icon)
+        adView.priceView = adPrice
+        adView.starRatingView = ratingBar
+        adView.storeView = adStore
+        adView.advertiserView = adAdvertiser
     }
 
     fun setNativeAd(nativeAd: NativeAd?) {
-        nativeAd ?: return
-        val adView = findViewById<NativeAdView>(R.id.ad_view)
-        (adView.headlineView as TextView).text = nativeAd?.headline
-        (adView.bodyView as TextView).text = nativeAd?.body
-        (adView.callToActionView as Button).text = nativeAd?.callToAction
-        (adView.iconView as ImageView).setImageDrawable(nativeAd?.icon?.drawable)
-        (adView.priceView as TextView).text = nativeAd?.price
-        (adView.storeView as TextView).text = nativeAd?.store
-        (adView.advertiserView as TextView).text = nativeAd?.advertiser
-        nativeAd?.mediaContent?.let {
-            adView.mediaView?.setMediaContent(it)
+        if (nativeAd == null) return
+
+        // Some assets are guaranteed to be in every UnifiedNativeAd.
+        adMedia.setMediaContent(nativeAd.mediaContent)
+        adMedia.setImageScaleType(ImageView.ScaleType.FIT_CENTER)
+
+        adHeadline.text = nativeAd.headline
+        adBody.text = nativeAd.body
+        (adView.callToActionView as Button).text = nativeAd.callToAction
+
+        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
+        // check before trying to display them.
+        val icon = nativeAd.icon
+
+        if (icon == null) {
+            adView.iconView.visibility = View.GONE
+        } else {
+            (adView.iconView as ImageView).setImageDrawable(icon.drawable)
+            adView.iconView.visibility = View.VISIBLE
         }
-        adView.callToActionView = findViewById(R.id.btnAction)
+
+        if (nativeAd.price == null) {
+            adPrice.visibility = View.INVISIBLE
+        } else {
+            adPrice.visibility = View.VISIBLE
+            adPrice.text = nativeAd.price
+        }
+
+        if (nativeAd.store == null) {
+            adStore.visibility = View.INVISIBLE
+        } else {
+            adStore.visibility = View.VISIBLE
+            adStore.text = nativeAd.store
+        }
+
+        if (nativeAd.starRating == null) {
+            adView.starRatingView.visibility = View.INVISIBLE
+        } else {
+            (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
+            adView.starRatingView.visibility = View.VISIBLE
+        }
+
+        if (nativeAd.advertiser == null) {
+            adAdvertiser.visibility = View.INVISIBLE
+        } else {
+            adAdvertiser.visibility = View.VISIBLE
+            adAdvertiser.text = nativeAd.advertiser
+        }
+
+        // Assign native ad object to the native view.
         adView.setNativeAd(nativeAd)
-        adView.callToActionView = findViewById(R.id.btnAction)
+    }
+
+    private fun updateOptions() {
+        adMedia.visibility = if (options.showMediaContent) View.VISIBLE else View.GONE
+
+        ratingBar.progressDrawable
+            .setColorFilter(options.ratingColor, PorterDuff.Mode.SRC_ATOP)
+
+        options.adLabelTextStyle.backgroundColor?.let {
+            adAttribution.background = it.toRoundedColor(3f)
+        }
+        adAttribution.textSize = options.adLabelTextStyle.fontSize
+        adAttribution.setTextColor(options.adLabelTextStyle.color)
+
+        adHeadline.setTextColor(options.headlineTextStyle.color)
+        adHeadline.textSize = options.headlineTextStyle.fontSize
+
+        adAdvertiser.setTextColor(options.advertiserTextStyle.color)
+        adAdvertiser.textSize = options.advertiserTextStyle.fontSize
+
+        adBody.setTextColor(options.bodyTextStyle.color)
+        adBody.textSize = options.bodyTextStyle.fontSize
+
+        adStore.setTextColor(options.storeTextStyle.color)
+        adStore.textSize = options.storeTextStyle.fontSize
+
+        adPrice.setTextColor(options.priceTextStyle.color)
+        adPrice.textSize = options.priceTextStyle.fontSize
+
+        callToAction.setTextColor(options.callToActionStyle.color)
+        callToAction.textSize = options.callToActionStyle.fontSize
+        options.callToActionStyle.backgroundColor?.let {
+            callToAction.setBackgroundColor(it)
+        }
     }
 }

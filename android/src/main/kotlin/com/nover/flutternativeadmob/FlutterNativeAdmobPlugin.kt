@@ -89,11 +89,6 @@ class NativePlatformView(
   init {
     val map = params as HashMap<*, *>
 
-    var type = NativeAdmobType.full
-    (map["type"] as? String)?.let {
-      type = NativeAdmobType.valueOf(it)
-    }
-
     view = NativeAdView(context)
 
     (map["controllerID"] as? String)?.let { id ->
