@@ -1,8 +1,9 @@
 <com.google.android.gms.ads.formats.UnifiedNativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ad_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -59,7 +60,6 @@
 
         <ImageView
             android:id="@+id/imvIcon"
-            tools:visibility="visible"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="12dp"
@@ -68,7 +68,8 @@
             android:visibility="visible"
             app:layout_constraintCircleRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/adMedia" />
+            app:layout_constraintTop_toBottomOf="@id/adMedia"
+            tools:visibility="visible" />
 
 
         <LinearLayout
