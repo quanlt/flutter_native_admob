@@ -94,17 +94,13 @@ class NativePlatformView(
       type = NativeAdmobType.valueOf(it)
     }
 
-    view = NativeAdView(context, type)
+    view = NativeAdView(context)
 
     (map["controllerID"] as? String)?.let { id ->
       val controller = NativeAdmobControllerManager.getController(id)
       controller?.nativeAdChanged = { view.setNativeAd(it) }
       this.controller = controller
     }
-
-    view.options = (map["options"] as? HashMap<*, *>)?.let {
-      NativeAdmobOptions.parse(it)
-    } ?: NativeAdmobOptions()
 
     controller?.nativeAd?.let {
       view.setNativeAd(it)

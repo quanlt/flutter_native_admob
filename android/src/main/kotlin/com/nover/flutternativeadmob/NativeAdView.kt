@@ -50,16 +50,16 @@ class NativeAdView : FrameLayout {
     adView.mediaView = view.findViewById(R.id.adMedia)
   }
 
-  fun loadAd(nativeAd: UnifiedNativeAd) {
+  fun setNativeAd(nativeAd: UnifiedNativeAd?) {
     val adView = findViewById<UnifiedNativeAdView>(R.id.ad_view)
-    (adView.headlineView as TextView).text = nativeAd.headline
-    (adView.bodyView as TextView).text = nativeAd.body
-    (adView.callToActionView as Button).text = nativeAd.callToAction
-    (adView.iconView as ImageView).setImageDrawable(nativeAd.icon?.drawable)
-    (adView.priceView as TextView).text = nativeAd.price
-    (adView.storeView as TextView).text = nativeAd.store
-    (adView.advertiserView as TextView).text = nativeAd.advertiser
-    nativeAd.mediaContent?.let {
+    (adView.headlineView as TextView).text = nativeAd?.headline
+    (adView.bodyView as TextView).text = nativeAd?.body
+    (adView.callToActionView as Button).text = nativeAd?.callToAction
+    (adView.iconView as ImageView).setImageDrawable(nativeAd?.icon?.drawable)
+    (adView.priceView as TextView).text = nativeAd?.price
+    (adView.storeView as TextView).text = nativeAd?.store
+    (adView.advertiserView as TextView).text = nativeAd?.advertiser
+    nativeAd?.mediaContent?.let {
       adView.mediaView?.setMediaContent(it)
     }
     adView.setNativeAd(nativeAd)
